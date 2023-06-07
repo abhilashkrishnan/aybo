@@ -1,2 +1,2 @@
-# aybo
-x86 Operating System 
+# AYBO
+AYBO is an experimental x86 Operating System 
