@@ -11,15 +11,31 @@ start:
     jmp 0x7c0:step2
 
 step2:
-    cli
+    cli ; CLEAR INTERRUPTS
     mov ax, 0x7c0
     mov ds, ax
     mov es, ax
     mov ax, 0x00
     mov ss, ax
     mov sp, 0x7c00
-    sti
-    mov si, message
+    sti ; ENABLE INTERRUPTS
+
+    mov ah, 2 ; READ SECTOR COMMAND
+    mov al, 1 ; ONE SECTOR TO READ
+    mov ch, 0 ; Cylinder low eight bits
+    mov cl, 2 ; Read sector two
+    mov dh, 0 ; Head number
+    mov bx, buffer
+    int 0x13
+    jc error
+
+    mov si, buffer
+    call print
+
+    jmp $
+
+error:
+    mov si, error_message
     call print
     jmp $
 
@@ -39,7 +55,9 @@ print_char:
     int 0x10
     ret 
 
-message: db 'Hello World!', 0
+error_message: db 'Failed to load sector', 0
 
 times 510-($ - $$) db 0
 dw 0xAA55
+
+buffer:
