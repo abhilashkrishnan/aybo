@@ -1,2 +1,2 @@
 # AYBO
-AYBO is an experimental Multi-threaded x86 Operating System 
+AYBO is an experimental Multi-tasking x86 Operating System 
